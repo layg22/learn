@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Desafio encriptador</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="enzabezado">
+        <h1 class="logo"><img src="imagenes/logo.png"></h1>
+        <h2 class="titulo">Encriptador de texto: challenge 1</h2>
+        </div>
+
+    </header>
+    <main>
+        <section class="form box">
+            <form action="">
+              <label for="input-texto" class="lab">Solo letras minúsculas, sin acento</label>
+              <input class="text-input" type="text" name="input-texto" id="input-texto" placeholder="Ingrese el texto aqui">
+              <input class="btn" type="button" value="Encriptar!" id="btn-encriptar">
+              <input class="btn" type="button" value="Desencriptar!" id="btn-desencriptar">
+            </form>
+          </section>
+        
+          <section class="msg box">
+            <label for="input-texto" class="lab">Mensaje Encriptado</label>
+            <input class="text-input" type="text" id="msg" placeholder="Ningun mensaje fue encontrado"></input>
+            <input class="btn" type="button" value="Copiar" id="btn-copy">
+          </section>
+    </main>
+    <footer>
+        <p class="piepagina">&copy Copyright Layg encriptador alura</p>
+    </footer>
+
+</body>
+
+<script>
+    function validarTexto (texto) {
+            
+            let caracteres = /[~!@#$%^&*()_+|}{[\]\\\/?><:"`;.,áéíóúàèìòù']/g;
+            let mayusculas = /[A-Z]/g;  
+            let vacio="";  
+            
+            if(texto.match(mayusculas)||texto.match(caracteres)){
+
+                alert("No se permiten caracteres especiales ni mayusculas");
+                    return true; 
+                }else if(texto==vacio){
+                    alert("Ingrese un mensaje para encriptar");
+                        return true;
+                }else {
+                        return false;
+            }
+    }
+
+
+    let btnEncriptar = document.querySelector("#btn-encriptar");
+
+    btnEncriptar.addEventListener("click",function ()  {
+        let textInput = document.querySelector("#input-texto").value;
+        let textoIngresado = textInput;
+
+        if (validarTexto (textoIngresado) == false) {       
+            let Encriptado = encriptar(textoIngresado);
+            let resultado = document.querySelector("#msg");
+            resultado.value = Encriptado;
+        } else {        
+            textInput = "";     
+        
+        }
+                
+    })
+
+    const reglas = { "e":"enter","i":"imes","a":"ai","o":"ober","u":"ufat"};
+
+    function encriptar (textoIngresado) {
+        let Encriptado = "";
+        for (const obj in reglas) {
+            Encriptado = textoIngresado.replaceAll(obj,reglas[obj]);
+            textoIngresado = Encriptado;        
+        }
+        return (Encriptado);
+    }
+
+    let btnCopiar = document.querySelector("#btn-copy");
+
+    btnCopiar.addEventListener("click",function(){        
+        let Copiado = document.querySelector("#msg").value;
+        navigator.clipboard.writeText(Copiado);
+        document.querySelector("#input-texto").value="";
+
+    });
+
+    let btnDesencriptar = document.querySelector("#btn-desencriptar");
+
+    btnDesencriptar.addEventListener("click", function(){
+        let textoIngresado = document.querySelector("#input-texto").value;
+        let Desencriptado = desencriptar(textoIngresado);
+
+        let resultado = document.querySelector("#msg");
+        resultado.value = Desencriptado;
+    })
+
+    function desencriptar (textoIngresado) {
+        let Encriptado = "";
+        for (const obj in reglas) {
+            Encriptado = textoIngresado.replaceAll(reglas[obj],obj);
+            textoIngresado = Encriptado;        
+        }
+        return (Encriptado);
+    }
+</script>
